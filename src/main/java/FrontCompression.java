@@ -44,8 +44,26 @@ public class FrontCompression {
         /*
          * Complete this function.
          */
+        String[] words = corpus.split("\n");
+        String[] encodedWords = new String[words.length];
+        encodedWords[0] = "0 " + words[0];
+        for (int i = 0; i < words.length - 1; i++) {
+            int j = 0;
+            for (j = 0; j < words[i].length(); j++) {
+                String prefix = words[i].substring(0, j + 1);
+                if (words[i + 1].indexOf(prefix) != 0) {
+                    j--;
+                    break;
+                } else if (j == words[i].length() - 1) {
+                    break;
+                }
+            }
+            encodedWords[i + 1] = j + 1 + " " + words[i + 1].substring(j + 1);
 
-        return "";
+        }
+        String encodedCorpus = String.join("\n", encodedWords);
+        return encodedCorpus;
+
     }
 
     /**
@@ -67,8 +85,17 @@ public class FrontCompression {
         /*
          * Complete this function.
          */
+        String[] words = corpus.split("\n");
+        String[] decodedWords = new String[words.length];
+        decodedWords[0] = words[0].substring(2);
+        for (int i = 0; i < decodedWords.length - 1; i++) {
+            String[] components = words[i + 1].split(" ");
+            int preLen = Integer.parseInt(components[0]);
+            decodedWords[i + 1] = decodedWords[i].substring(0, preLen) + components[1];
 
-        return "";
+        }
+        String decodedCorpus = String.join("\n", decodedWords);
+        return decodedCorpus;
     }
 
     /**
